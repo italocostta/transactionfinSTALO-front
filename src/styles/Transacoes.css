@@ -1,0 +1,255 @@
+/* Container Principal de Transações */
+.transacoes-container {
+  max-width: 900px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* Cabeçalho de Transações */
+.transacoes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+/* Título */
+.transacoes-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Ações do Cabeçalho (Botões) */
+.transacoes-actions {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* Botão Criar Transação */
+.criar-transacao-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.criar-transacao-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
+}
+
+/* Botão Logout */
+.logout-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #f44336;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.logout-button:hover {
+  background-color: #c0392b;
+  transform: translateY(-3px);
+}
+
+/* Lista de Transações */
+.transacoes-lista {
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Itens da Lista de Transações */
+.transacao-item {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  align-items: center;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.transacao-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* Detalhes das Transações */
+.transacao-data {
+  font-weight: 700;
+  color: #444;
+  font-size: 1rem;
+}
+
+.transacao-detalhes p {
+  margin: 0.3rem 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* Dropdown de Opções */
+.transacao-opcoes {
+  position: relative;
+  z-index: 10; 
+}
+
+.opcoes-icon {
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #777;
+  transition: color 0.3s;
+}
+
+.opcoes-icon:hover {
+  color: #333;
+}
+
+.dropdown-opcoes {
+  display: none;
+  position: absolute;
+  right: 0; 
+  top: 100%;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  z-index: 20; 
+  min-width: 150px;
+  padding: 0.5rem 0;
+}
+
+.transacao-opcoes:hover .dropdown-opcoes {
+  display: block;
+}
+
+.dropdown-opcoes button {
+  display: block;
+  padding: 0.75rem 1.5rem;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 1rem;
+  color: #333;
+  transition: background-color 0.3s;
+}
+
+.dropdown-opcoes button:hover {
+  background-color: #f1f1f1;
+}
+
+/* Mensagem de Nenhuma Transação */
+.no-transacoes {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #777;
+  margin-top: 2rem;
+}
+
+/* Mensagem de Erro */
+.error-message {
+  color: #f44336;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  max-width: 90%;
+  background-color: #ffffff;
+  padding: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 500;
+}
+
+/* Botão Fechar Modal */
+.fechar-modal-button {
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.fechar-modal-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
+}
+
+/* Botão Excluir */
+.excluir-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #f44336; 
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.excluir-button:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+/* Botão Cancelar */
+.cancelar-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #007bff; 
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-left: 1rem;
+}
+
+.cancelar-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}

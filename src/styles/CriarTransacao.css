@@ -1,0 +1,85 @@
+/* Container Principal para Criar Transação */
+.criar-transacao-container {
+  max-width: 450px;
+  margin: 5rem auto;
+  padding: 2rem;
+  background-color: #f9f9f9; /* Fundo mais suave */
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Sombra mais suave */
+  font-family: Arial, sans-serif; /* Fonte legível */
+}
+
+/* Formulário de Criar Transação */
+.criar-transacao-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Grupo de Inputs */
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  margin-bottom: 0.5rem;
+  display: block;
+  font-weight: bold;
+  color: #333; /* Cor do texto */
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s, box-shadow 0.3s; /* Transições para quando o campo está em foco */
+}
+
+.input-group input:focus {
+  border-color: #007bff; /* Cor do campo em foco */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+/* Botão Criar Transação */
+.criar-transacao-button {
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  background-color: #007bff;
+  color: #ffffff;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /* Transições para hover e clique */
+}
+
+.criar-transacao-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px); /* Efeito de elevação ao passar o mouse */
+}
+
+/* Botão Cancelar */
+.cancelar-transacao-button {
+  padding: 0.75rem;
+  background-color: #f44336; /* Cor para destacar o botão de cancelar */
+  color: #ffffff;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.cancelar-transacao-button:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+/* Mensagem de Erro */
+.error-message {
+  color: #f44336;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  text-align: center; /* Centraliza a mensagem de erro */
+}

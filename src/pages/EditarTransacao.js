@@ -1,14 +1,55 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import api from '../services/api';
 import '../styles/CriarTransacao.css';
 
-function CriarTransacao() {
+function EditarTransacao() {
   const [valor, setValor] = useState('');
   const [cpf, setCpf] = useState('');
   const [documento, setDocumento] = useState(null);
+  const [status, setStatus] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchTransacao = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
+
+        if (!token) {
+          setError('Usuário não autenticado.');
+          navigate('/login');
+          return;
+        }
+
+        // Verifica se o usuário é admin
+        setIsAdmin(role === 'ADMIN');
+
+        // Busca a transação pelo ID
+        const response = await api.get(`/transacoes/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const transacao = response.data;
+        setValor(new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+          minimumFractionDigits: 2,
+        }).format(transacao.valor));
+        setCpf(transacao.cpf);
+        setStatus(transacao.status);
+      } catch (err) {
+        setError('Erro ao buscar transação. Tente novamente mais tarde.');
+      }
+    };
+
+    fetchTransacao();
+  }, [id, navigate]);
 
   // Função para formatar o valor da transação no padrão de moeda brasileira
   const handleValorChange = (e) => {
@@ -24,24 +65,6 @@ function CriarTransacao() {
     setValor(formattedValue);
   };
 
-  // Função para formatar o CPF enquanto o usuário digita
-  const handleCpfChange = (e) => {
-    const inputValue = e.target.value.replace(/\D/g, '');
-    let formattedCpf = inputValue;
-
-    if (formattedCpf.length > 3) {
-      formattedCpf = formattedCpf.replace(/^(\d{3})(\d)/, '$1.$2');
-    }
-    if (formattedCpf.length > 7) {
-      formattedCpf = formattedCpf.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
-    }
-    if (formattedCpf.length > 11) {
-      formattedCpf = formattedCpf.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
-    }
-
-    setCpf(formattedCpf);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -54,27 +77,25 @@ function CriarTransacao() {
         return;
       }
 
-      // Prepara o objeto de dados que deve ser enviado
+      // Prepara o objeto de dados que deve ser enviado, excluindo o CPF
       const numericValue = parseFloat(valor.replace(/[R$.]/g, '').replace(',', '.'));
-      const transacao = {
+      const transacaoAtualizada = {
         valor: numericValue,
-        cpf: cpf.replace(/\D/g, ''),
-        status: 'EM_PROCESSAMENTO', // Define o status inicial da transação
+        ...(isAdmin && { status }), // Envia o status apenas se o usuário for admin
       };
 
       const formData = new FormData();
       formData.append(
         'transacao',
-        new Blob([JSON.stringify(transacao)], {
+        new Blob([JSON.stringify(transacaoAtualizada)], {
           type: 'application/json',
         })
       );
-
       if (documento) {
         formData.append('documento', documento);
       }
 
-      await api.post('/transacoes', formData, {
+      await api.put(`/transacoes/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -83,13 +104,17 @@ function CriarTransacao() {
 
       navigate('/transacoes');
     } catch (err) {
-      setError('Erro ao criar transação. Tente novamente.');
+      setError('Erro ao editar transação. Tente novamente.');
     }
+  };
+
+  const formatarCpf = (cpf) => {
+    return `${cpf.substring(0, 3)}.***.***-${cpf.substring(cpf.length - 2)}`;
   };
 
   return (
     <div className="criar-transacao-container">
-      <h2>Criar Transação</h2>
+      <h2>Editar Transação</h2>
       <form onSubmit={handleSubmit} className="criar-transacao-form">
         {error && <p className="error-message">{error}</p>}
         <div className="input-group">
@@ -103,14 +128,18 @@ function CriarTransacao() {
         </div>
         <div className="input-group">
           <label>CPF:</label>
-          <input
-            type="text"
-            value={cpf}
-            onChange={handleCpfChange}
-            maxLength="14"
-            required
-          />
+          <input type="text" value={formatarCpf(cpf)} disabled />
         </div>
+        {isAdmin && (
+          <div className="input-group">
+            <label>Status da Transação:</label>
+            <select value={status} onChange={(e) => setStatus(e.target.value)} required>
+              <option value="EM_PROCESSAMENTO">Em processamento</option>
+              <option value="APROVADA">Aprovada</option>
+              <option value="NEGADA">Negada</option>
+            </select>
+          </div>
+        )}
         <div className="input-group">
           <label>Comprovante (PDF/Imagem):</label>
           <input
@@ -120,7 +149,7 @@ function CriarTransacao() {
           />
         </div>
         <button type="submit" className="criar-transacao-button">
-          Salvar
+          Salvar Alterações
         </button>
         <button
           type="button"
@@ -134,4 +163,4 @@ function CriarTransacao() {
   );
 }
 
-export default CriarTransacao;
+export default EditarTransacao;

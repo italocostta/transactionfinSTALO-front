@@ -1,16 +1,19 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './pages/Login';  // Atualize o caminho para a nova localização
-import Transacoes from './pages/Transacoes';  // Atualize o caminho para a nova localização
-import CriarTransacao from './pages/CriarTransacao';  // Atualize o caminho para a nova localização
+import Login from './pages/Login';  
+import Transacoes from './pages/Transacoes'; 
+import CriarTransacao from './pages/CriarTransacao';  
+import EditarTransacao from './pages/EditarTransacao';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+      <Route path="" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/transacoes" element={<Transacoes />} />
         <Route path="/criar-transacao" element={<CriarTransacao />} />
+        <Route path="/editar-transacao/:id" element={<EditarTransacao />} />
       </Routes>
     </Router>
   );
