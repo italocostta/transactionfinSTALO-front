@@ -1,10 +1,9 @@
-/* Container Principal para Editar Transação */
 .editar-transacao-container {
   width: 100%;
   max-width: 500px;
   margin: 2rem auto;
   padding: 2rem;
-  background-color: #ffffff; /* Branco */
+  background-color: #ffffff; 
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -12,10 +11,10 @@
 .editar-transacao-container h2 {
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #333; /* Preto claro */
+  color: #333; 
 }
 
-/* Grupo de Inputs */
+
 .input-group {
   margin-bottom: 1rem;
 }
@@ -24,32 +23,32 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: bold;
-  color: #333; /* Preto claro */
+  color: #333; 
 }
 
 .input-group input,
 .input-group select {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #ccc; /* Cinza claro */
+  border: 1px solid #ccc; 
   border-radius: 4px;
-  transition: border-color 0.3s, box-shadow 0.3s; /* Transições para quando o campo está em foco */
+  transition: border-color 0.3s, box-shadow 0.3s; 
 }
 
 .input-group input:focus,
 .input-group select:focus {
-  border-color: #007bff; /* Azul primário */
+  border-color: #007bff; 
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   outline: none;
 }
 
-/* Botão Salvar Transação */
+
 .salvar-transacao-button {
   width: 100%;
   padding: 0.75rem;
   margin-top: 1rem;
-  background-color: #007bff; /* Azul primário */
-  color: #ffffff; /* Branco */
+  background-color: #007bff; 
+  color: #ffffff; 
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -58,17 +57,17 @@
 }
 
 .salvar-transacao-button:hover {
-  background-color: #0056b3; /* Azul escuro (hover) */
-  transform: translateY(-2px); /* Efeito de elevação ao passar o mouse */
+  background-color: #0056b3; 
+  transform: translateY(-2px);
 }
 
-/* Botão Cancelar */
+
 .cancelar-transacao-button {
   width: 100%;
   padding: 0.75rem;
   margin-top: 1rem;
-  background-color: #f44336; /* Vermelho */
-  color: #ffffff; /* Branco */
+  background-color: #f44336; 
+  color: #ffffff; 
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -77,14 +76,29 @@
 }
 
 .cancelar-transacao-button:hover {
-  background-color: #c0392b; /* Vermelho escuro (hover) */
-  transform: translateY(-2px);
+  background-color: #c0392b;
 }
 
-/* Mensagem de Erro */
+
 .error-message {
-  color: #f44336; /* Vermelho */
+  color: #f44336; 
   text-align: center;
   margin-bottom: 1rem;
   font-weight: bold;
+}
+
+
+.status-dropdown {
+  width: 60%; 
+  max-width: 200px; 
+  padding: 0.5rem; 
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.status-dropdown:focus {
+  border-color: #007bff; 
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
 }

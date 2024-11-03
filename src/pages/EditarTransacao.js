@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../services/api';
-import '../styles/CriarTransacao.css';
+import '../styles/EditarTransacao.css';
 
 function EditarTransacao() {
   const [valor, setValor] = useState('');
   const [cpf, setCpf] = useState('');
   const [documento, setDocumento] = useState(null);
   const [status, setStatus] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { id } = useParams();
@@ -17,7 +16,6 @@ function EditarTransacao() {
     const fetchTransacao = async () => {
       try {
         const token = localStorage.getItem('token');
-        const role = localStorage.getItem('role');
 
         if (!token) {
           setError('Usuário não autenticado.');
@@ -25,10 +23,7 @@ function EditarTransacao() {
           return;
         }
 
-        // Verifica se o usuário é admin
-        setIsAdmin(role === 'ADMIN');
-
-        // Busca a transação pelo ID
+        
         const response = await api.get(`/transacoes/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -36,11 +31,13 @@ function EditarTransacao() {
         });
 
         const transacao = response.data;
-        setValor(new Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-          minimumFractionDigits: 2,
-        }).format(transacao.valor));
+        setValor(
+          new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            minimumFractionDigits: 2,
+          }).format(transacao.valor)
+        );
         setCpf(transacao.cpf);
         setStatus(transacao.status);
       } catch (err) {
@@ -51,7 +48,7 @@ function EditarTransacao() {
     fetchTransacao();
   }, [id, navigate]);
 
-  // Função para formatar o valor da transação no padrão de moeda brasileira
+  
   const handleValorChange = (e) => {
     const inputValue = e.target.value;
     const numericValue = inputValue.replace(/\D/g, '');
@@ -77,11 +74,11 @@ function EditarTransacao() {
         return;
       }
 
-      // Prepara o objeto de dados que deve ser enviado, excluindo o CPF
+      
       const numericValue = parseFloat(valor.replace(/[R$.]/g, '').replace(',', '.'));
       const transacaoAtualizada = {
         valor: numericValue,
-        ...(isAdmin && { status }), // Envia o status apenas se o usuário for admin
+        status,
       };
 
       const formData = new FormData();
@@ -113,9 +110,9 @@ function EditarTransacao() {
   };
 
   return (
-    <div className="criar-transacao-container">
+    <div className="editar-transacao-container">
       <h2>Editar Transação</h2>
-      <form onSubmit={handleSubmit} className="criar-transacao-form">
+      <form onSubmit={handleSubmit} className="editar-transacao-form">
         {error && <p className="error-message">{error}</p>}
         <div className="input-group">
           <label>Valor da Transação (R$):</label>
@@ -130,16 +127,14 @@ function EditarTransacao() {
           <label>CPF:</label>
           <input type="text" value={formatarCpf(cpf)} disabled />
         </div>
-        {isAdmin && (
-          <div className="input-group">
-            <label>Status da Transação:</label>
-            <select value={status} onChange={(e) => setStatus(e.target.value)} required>
-              <option value="EM_PROCESSAMENTO">Em processamento</option>
-              <option value="APROVADA">Aprovada</option>
-              <option value="NEGADA">Negada</option>
-            </select>
-          </div>
-        )}
+        <div className="input-group">
+          <label>Selecione o Status da Transação:</label>
+          <select className="status-dropdown" value={status} onChange={(e) => setStatus(e.target.value)} required>
+            <option value="EM_PROCESSAMENTO">Em processamento</option>
+            <option value="APROVADA">Aprovada</option>
+            <option value="NEGADA">Negada</option>
+          </select>
+        </div>
         <div className="input-group">
           <label>Comprovante (PDF/Imagem):</label>
           <input
@@ -148,7 +143,7 @@ function EditarTransacao() {
             accept="application/pdf, image/*"
           />
         </div>
-        <button type="submit" className="criar-transacao-button">
+        <button type="submit" className="salvar-transacao-button">
           Salvar Alterações
         </button>
         <button

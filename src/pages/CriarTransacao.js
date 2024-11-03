@@ -10,7 +10,7 @@ function CriarTransacao() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Função para formatar o valor da transação no padrão de moeda brasileira
+
   const handleValorChange = (e) => {
     const inputValue = e.target.value;
     const numericValue = inputValue.replace(/\D/g, '');
@@ -24,7 +24,7 @@ function CriarTransacao() {
     setValor(formattedValue);
   };
 
-  // Função para formatar o CPF enquanto o usuário digita
+ 
   const handleCpfChange = (e) => {
     const inputValue = e.target.value.replace(/\D/g, '');
     let formattedCpf = inputValue;
@@ -54,12 +54,12 @@ function CriarTransacao() {
         return;
       }
 
-      // Prepara o objeto de dados que deve ser enviado
+      
       const numericValue = parseFloat(valor.replace(/[R$.]/g, '').replace(',', '.'));
       const transacao = {
         valor: numericValue,
         cpf: cpf.replace(/\D/g, ''),
-        status: 'EM_PROCESSAMENTO', // Define o status inicial da transação
+        status: 'EM_PROCESSAMENTO', 
       };
 
       const formData = new FormData();

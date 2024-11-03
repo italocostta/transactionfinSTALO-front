@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import '../styles/Transacoes.css';
-import { FaEllipsisV } from 'react-icons/fa';
+import { FaEllipsisV, FaSearch } from 'react-icons/fa';
 import Modal from 'react-modal';
 
 function Transacoes() {
   const [transacoes, setTransacoes] = useState([]);
+  const [filteredTransacoes, setFilteredTransacoes] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState('');
   const [transacaoSelecionada, setTransacaoSelecionada] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,8 +29,8 @@ function Transacoes() {
     }
   }
 
-  function formatarCpf(cpf) {
-    return `${cpf.substring(0, 3)}.***.***-${cpf.substring(cpf.length - 2)}`;
+  function formatarCpfCompleto(cpf) {
+    return `${cpf.substring(0, 3)}.${cpf.substring(3, 6)}.${cpf.substring(6, 9)}-${cpf.substring(9, 11)}`;
   }
 
   function formatarValor(valor) {
@@ -55,6 +57,7 @@ function Transacoes() {
         });
 
         setTransacoes(response.data);
+        setFilteredTransacoes(response.data);
       } catch (err) {
         setError('Erro ao buscar transações. Tente novamente mais tarde.');
       }
@@ -62,6 +65,13 @@ function Transacoes() {
 
     fetchTransacoes();
   }, [navigate]);
+
+  useEffect(() => {
+    const resultadosFiltrados = transacoes.filter((transacao) =>
+      formatarStatus(transacao.status).toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredTransacoes(resultadosFiltrados);
+  }, [searchTerm, transacoes]);
 
   const handleExcluir = async () => {
     try {
@@ -123,13 +133,26 @@ function Transacoes() {
         </div>
       </div>
 
+      <div className="busca-container">
+        <div className="busca-wrapper">
+          <input
+            type="text"
+            placeholder="Buscar pelo status da transação..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="busca-input"
+          />
+          <FaSearch className="busca-icon" />
+        </div>
+      </div>
+
       {error && <p className="error-message">{error}</p>}
 
       <div className="transacoes-lista">
-        {transacoes.length === 0 ? (
+        {filteredTransacoes.length === 0 ? (
           <p className="no-transacoes">Nenhuma transação encontrada.</p>
         ) : (
-          transacoes.map((transacao) => (
+          filteredTransacoes.map((transacao) => (
             <div key={transacao.id} className="transacao-item">
               <div className="transacao-coluna transacao-data">
                 <p>
@@ -192,7 +215,7 @@ function Transacoes() {
               ? `Atualizado em: ${new Date(transacaoSelecionada.dataAtualizacao).toLocaleString()}`
               : `Criado em: ${new Date(transacaoSelecionada.dataCriacao).toLocaleString()}`}
           </p>
-          <p>CPF: {formatarCpf(transacaoSelecionada.cpf)}</p>
+          <p>CPF: {formatarCpfCompleto(transacaoSelecionada.cpf)}</p>
           <button onClick={closeModal} className="fechar-modal-button">
             Fechar
           </button>
